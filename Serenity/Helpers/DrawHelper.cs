@@ -5,7 +5,6 @@ using Serenity.Modules;
 using static Serenity.Helpers.PrettyLog;
 using Timer = System.Timers.Timer;
 
-
 namespace Serenity.Helpers
 {
     public class DrawHelper
@@ -14,13 +13,13 @@ namespace Serenity.Helpers
         private Rectangle _fov;
         private Pen _pen;
         private Thread _thread;
+        private object syncRoot = new object();
 
         public DrawHelper(IModule module)
         {
             _fov = module.GetFov().FieldOfView;
             _pen = new Pen(Color.Green, 3);
         }
-
 
         public void ToggleFov()
         {
@@ -38,7 +37,6 @@ namespace Serenity.Helpers
             }
         }
 
-
         private void run()
         {
             _thread = new Thread(() =>
@@ -48,7 +46,10 @@ namespace Serenity.Helpers
                 {
                     using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
                     {
-                        g.DrawRectangle(_pen, _fov);
+                        lock (syncRoot)
+                        {
+                            g.DrawRectangle(_pen, _fov);
+                        }
                     }
                 };
             });

@@ -32,7 +32,7 @@ namespace Serenity.Modules.Anabot
                 new Fov { Resolution = new Point(1280, 720), FieldOfView = new Rectangle(550, 300, 180, 110), RangeValues = new Point(0, 25), Tolerance = new Point(2, 2) }
             };
 
-            MyFov = Fovs.FirstOrDefault(x => x.Resolution == new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+            MyFov = Fovs.FirstOrDefault(x => x.Resolution == ScreenHelper.GetScreenResolution());
 
             if (MyFov != null)
             {
