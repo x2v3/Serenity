@@ -32,7 +32,7 @@ namespace Serenity.Modules.Widowbot
                 new Fov { Resolution = new Point(1280, 720), FieldOfView = new Rectangle(580, 335, 120, 40), RangeValues = new Point(0, 18), Tolerance = new Point(2, 2) }
             };
 
-            MyFov = Fovs.FirstOrDefault(x => x.Resolution == new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+            MyFov = Fovs.FirstOrDefault(x => x.Resolution == ScreenHelper.GetScreenResolution());
 
             if (MyFov != null)
             {

@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace Serenity.Helpers
 {
@@ -44,6 +46,15 @@ namespace Serenity.Helpers
         public static Point GetAbsoluteCoordinates(Point relative, Rectangle fov)
         {
             return new Point { X = relative.X + fov.X, Y = relative.Y + fov.Y };
+        }
+
+        public static Point GetScreenResolution()
+        {
+            var rect = Screen.GetBounds(Screen.PrimaryScreen.Bounds);
+
+            var currentDPI = (int)Registry.GetValue("HKEY_CURRENT_USER\\Control Panel\\Desktop", "LogPixels", 96);
+            var scale = 96 / (float)currentDPI;
+            return new Point((int)(Screen.PrimaryScreen.Bounds.Width / scale), (int)(Screen.PrimaryScreen.Bounds.Height / scale));
         }
     }
 }

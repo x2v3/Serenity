@@ -31,7 +31,8 @@ namespace Serenity.Modules.Aimbot
                 new Fov { Resolution = new Point(1280, 720), FieldOfView = new Rectangle(500, 300, 245, 120), RangeValues = new Point(30, 42), Tolerance = new Point(2, 2) }
             };
 
-            MyFov = Fovs.FirstOrDefault(x => x.Resolution == new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+            var displayingResolution = ScreenHelper.GetScreenResolution();
+            MyFov = Fovs.FirstOrDefault(x => x.Resolution == displayingResolution);
 
             if (MyFov != null)
             {
@@ -96,17 +97,20 @@ namespace Serenity.Modules.Aimbot
                     SettingsManager.Aimbot.ForceHeadshot = !SettingsManager.Aimbot.ForceHeadshot;
                     LogInfo($"Force headshots: {SettingsManager.Aimbot.ForceHeadshot}");
                     break;
+
                 case "antishake":
                 case "noshake":
                     SettingsManager.Aimbot.ForceHeadshot = !SettingsManager.Aimbot.ForceHeadshot;
                     LogInfo($"Force headshots: {SettingsManager.Aimbot.ForceHeadshot}");
                     break;
+
                 case "help":
                     LogInfo("Commands available for Aimbot:\n\n" +
                             "Headshot, forcehs, hs\t- Force aimbot to aim for heads only.\n" +
                             "Antishake, noshake\t- I don't really understand what this does lmao.\n" +
                             "Help\t\t\t- Print this text again.\n");
                     break;
+
                 default:
                     LogWarning($"Unrecognised command {command}.\nType 'aimbot help' to view all commands.\n");
                     break;

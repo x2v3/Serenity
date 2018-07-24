@@ -21,7 +21,7 @@ namespace Serenity
         {
             // Set the title of the window.
             Console.Title = "Dropbox";
-
+            System.Windows.Forms.Form.CheckForIllegalCrossThreadCalls = false;
             LogInfo("Initializing settings.");
             var settingsManager = new SettingsManager();
             settingsManager.LoadSettingsFromDefaultPath();
@@ -33,7 +33,6 @@ namespace Serenity
             var widowbot = new Widowbot();
             var anabot = new Anabot();
             var drawhelper = new DrawHelper(aimbot); // aimbot default
-
 
             LogInfo("Initialization complete. If you're lost, type help in this console.");
 
@@ -54,21 +53,26 @@ namespace Serenity
                         case "aim":
                             aimbot.HandleCommand(commandArgs);
                             break;
+
                         case "anabot":
                         case "ana":
                             anabot.HandleCommand(commandArgs);
                             break;
+
                         case "widowbot":
                         case "widow":
                             widowbot.HandleCommand(commandArgs);
                             break;
+
                         case "triggerbot":
                         case "trigger":
                             triggerbot.HandleCommand(commandArgs);
                             break;
+
                         case "settings":
                             settingsManager.HandleCommand(commandArgs);
                             break;
+
                         case "help":
                             LogInfo("\nSoftware written by syscall78 and updated by Roast.\nIf you paid money for this, you've been scammed!\n\n" +
                                     "Available commands:\n" +
@@ -80,10 +84,12 @@ namespace Serenity
                                     "clear, cls\t\t- Clear the console window\n" +
                                     "help\t\t\t- Print this text again.\n");
                             break;
+
                         case "clear":
                         case "cls":
                             Console.Clear();
                             break;
+
                         default:
                             LogError($"No command matching '{commandRoot}', please enter a valid command or type 'help'.");
                             break;
@@ -113,9 +119,6 @@ namespace Serenity
 
                 Thread.Sleep(1);
             }
-
-           
-
         }
     }
 }

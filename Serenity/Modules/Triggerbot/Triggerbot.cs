@@ -31,7 +31,7 @@ namespace Serenity.Modules.Triggerbot
                 new Fov { Resolution = new Point(1920, 1080), FieldOfView = new Rectangle(960, 400, 1, 165) }
             };
 
-            MyFov = Fovs.FirstOrDefault(x => x.Resolution == new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+            MyFov = Fovs.FirstOrDefault(x => x.Resolution == ScreenHelper.GetScreenResolution());
 
             // Run the aimbot.
             var thread = new Thread(Run);
@@ -58,24 +58,24 @@ namespace Serenity.Modules.Triggerbot
         {
             while (true)
             {
-                if(SettingsManager.Triggerbot.IsEnabled)
-                if (MouseHelper.GetAsyncKeyState(SettingsManager.Triggerbot.AimKey) < 0)
-                {
-                    // Get the screen capture.
-                    var screenCapture = ScreenHelper.GetScreenCapture(MyFov.FieldOfView);
-
-                    // Search for a target.
-                    var coordinates = SearchHelper.SearchColor(ref screenCapture, SettingsManager.Triggerbot.TargetColor, 100);
-
-                    if (coordinates.X != 0 || coordinates.Y != 0)
+                if (SettingsManager.Triggerbot.IsEnabled)
+                    if (MouseHelper.GetAsyncKeyState(SettingsManager.Triggerbot.AimKey) < 0)
                     {
-                        MouseHelper.Click();
-                    }
+                        // Get the screen capture.
+                        var screenCapture = ScreenHelper.GetScreenCapture(MyFov.FieldOfView);
 
-                    // Destroy the bitmap.
-                    screenCapture.Dispose();
-                    screenCapture = null;
-                }
+                        // Search for a target.
+                        var coordinates = SearchHelper.SearchColor(ref screenCapture, SettingsManager.Triggerbot.TargetColor, 100);
+
+                        if (coordinates.X != 0 || coordinates.Y != 0)
+                        {
+                            MouseHelper.Click();
+                        }
+
+                        // Destroy the bitmap.
+                        screenCapture.Dispose();
+                        screenCapture = null;
+                    }
 
                 Thread.Sleep(1);
             }
@@ -102,17 +102,17 @@ namespace Serenity.Modules.Triggerbot
                     SettingsManager.Triggerbot.IsEnabled = !SettingsManager.Triggerbot.IsEnabled;
                     LogInfo($"Triggerbot enabled: {SettingsManager.Triggerbot.IsEnabled}");
                     break;
+
                 case "help":
                     LogInfo("Commands available for Triggerbot:\n\n" +
                             "Toggle\t- Enable/Disable the triggerbot\n" +
                             "Help\t- Print this text again.\n");
                     break;
+
                 default:
                     LogWarning($"Unrecognised command {command}.\nType 'triggerbot help' to view all commands.");
                     break;
             }
-
-
         }
 
         public Fov GetFov()
